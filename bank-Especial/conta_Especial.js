@@ -35,14 +35,13 @@ class conta{
                 this.saldo -= valor
             }
             else if(valor>this.saldo){
-                if(valor-this.saldo>limite){
-                    console.log("Impossivel realizar. Valor supera o valor do saldo e o limite.")
+                if(valor-this.saldo<limite){
+                    this.limite = this.limite - valor;
+                    this.limite = this.limite + this.saldo;
+                    this.saldo= this.saldo - this.saldo;
                 }
                 else{
-                    this.limite -= this.saldo
-                    valor -= this.saldo
-                    this.saldo -= this.saldo
-                    this.limite -= valor
+                    console.log("Impossivel realizar. Valor supera o valor do saldo e o limite.")
                 }
 
             }
@@ -59,7 +58,8 @@ class conta{
 const leia = require("prompt-sync")()
 let numero = parseInt(leia("digite o numero da conta:"))
 let cpf = leia("digite o cpf da conta:")
-let c1 = new conta(numero,cpf,0,false)
+let limite = 1000
+let c1 = new conta(numero,cpf,0,false,limite)
 let op=""
 let valor = 0
 c1.ativar()
@@ -70,6 +70,9 @@ for(let x=1; x<=10; x++){
     if(op=="D"){
         valor=parseInt (leia("digite o valor para debito: "))
         c1.debito(valor)
+        if (c1.saldo<=0){
+            console.log("voce usou todo o saldo, o seu limite restante é : "+c1.limite)
+        }
     }
     else if(op=="C"){
         valor=parseInt (leia("digite o valor para credito: "))
